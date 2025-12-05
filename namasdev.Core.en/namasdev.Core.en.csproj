@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B76D5686-EC28-4719-9326-909197C78D0A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>namasdev.Core.en</RootNamespace>
+    <AssemblyName>namasdev.Core.en</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.8\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assembly\AssemblyHelper.cs" />
+    <Compile Include="Entity\Entity.cs" />
+    <Compile Include="Entity\EntityDeleted.cs" />
+    <Compile Include="Entity\EntityCreated.cs" />
+    <Compile Include="Entity\EntityCreatedDeleted.cs" />
+    <Compile Include="Entity\EntityCreatedModified.cs" />
+    <Compile Include="Entity\EntityCreatedModifiedDeleted.cs" />
+    <Compile Include="Entity\IEntity.cs" />
+    <Compile Include="Entity\IEntityDeleted.cs" />
+    <Compile Include="Entity\IEntityCreated.cs" />
+    <Compile Include="Entity\IEntityExtensions.cs" />
+    <Compile Include="Entity\IEntityModified.cs" />
+    <Compile Include="Exception\ExceptionFriendlyMessage.cs" />
+    <Compile Include="Exception\ExceptionHelper.cs" />
+    <Compile Include="IO\File.cs" />
+    <Compile Include="IO\FileContentTypes.cs" />
+    <Compile Include="IO\FileExtensions.cs" />
+    <Compile Include="IO\TextFile.cs" />
+    <Compile Include="IO\PathHelper.cs" />
+    <Compile Include="IO\TextFileRecord.cs" />
+    <Compile Include="IO\StreamExtensions.cs" />
+    <Compile Include="MathHelper.cs" />
+    <Compile Include="Processing\BatchArgs.cs" />
+    <Compile Include="Processing\ProcessorHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\ReflectionHelper.cs" />
+    <Compile Include="Tasks\AsyncHelper.cs" />
+    <Compile Include="Transactions\TransactionScopeFactory.cs" />
+    <Compile Include="Types\ByteArrayExtensions.cs" />
+    <Compile Include="Types\Converter.cs" />
+    <Compile Include="Types\DateFormat.cs" />
+    <Compile Include="Types\DateTimeExtensions.cs" />
+    <Compile Include="Types\DictionaryExtensions.cs" />
+    <Compile Include="Types\EnumExtensions.cs" />
+    <Compile Include="Types\ExpandoObjectHelper.cs" />
+    <Compile Include="Types\DateTimeHelper.cs" />
+    <Compile Include="Types\Formatter.cs" />
+    <Compile Include="Types\GuidExtensions.cs" />
+    <Compile Include="Types\HtmlHelper.cs" />
+    <Compile Include="Linq\IEnumerableExtensions.cs" />
+    <Compile Include="Linq\IQueryableExtensions.cs" />
+    <Compile Include="Types\MonthOfYear.cs" />
+    <Compile Include="Types\NameValueCollectionExtensions.cs" />
+    <Compile Include="Types\NumbersHelper.cs" />
+    <Compile Include="Linq\OrderAndPagingParameters.cs" />
+    <Compile Include="Types\DateRange.cs" />
+    <Compile Include="Types\StringExtensions.cs" />
+    <Compile Include="Types\QuarterOfYear.cs" />
+    <Compile Include="Validation\EnumValidAttribute.cs" />
+    <Compile Include="Validation\Validator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="namasdev.Core.en.nuspec" />
+    <None Include="nuget-gen-pub.cmd" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
