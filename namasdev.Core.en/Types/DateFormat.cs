@@ -1,4 +1,4 @@
-﻿namespace namasdev.Core.en.Types
+﻿namespace namasdev.Core.Types
 {
     public enum DateFormat
     {

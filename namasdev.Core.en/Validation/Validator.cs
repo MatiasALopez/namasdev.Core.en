@@ -6,10 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
-using namasdev.Core.en.Types;
+
+using namasdev.Core.Types;
 using namasdev.Core.Exceptions;
 using namasdev.Core.Reflection;
-using namasdev.Core.Types;
 
 namespace namasdev.Core.Validation
 {
@@ -20,31 +20,35 @@ namespace namasdev.Core.Validation
             public class Formats
             {
                 public const string INVALID = "{0} is not in the valid format.";
+                public const string TYPE_INVALID = "{0} is not a valid {1} value.";
+                public const string MUST_BE_EMPTY = "{0} must be empty.";
+                public const string LIST_NOT_EMPTY = "{0} must contain at least one valid element.";
                 public const string REQUIRED = "{0} is required.";
+                public const string ENTITY_NOT_FOUND = "{0} not found ({1}).";
+                public const string ENTITY_DELETED = "{0} was already deleted ({2}).";
                 public const string TEXT_LENGTH_MIN = "{0} must be {1} characters long al least.";
                 public const string TEXT_LENGTH_MAX = "{0} must be {1} characters long at most.";
                 public const string TEXT_LENGTH_RANGE = "{0} must be between {1} and {2} characters long.";
                 public const string TEXT_EXACT_LENGTH = "{0} must be exactly {1} characters long.";
-                public const string TYPE_INVALID = "{0} is not a valid {1} value.";
-                public const string ENTITY_NOT_FOUND = "{0} not found ({1}).";
-                public const string ENTITY_DELETED = "{0} was already deleted ({2}).";
-                public const string DATES_INVALID_RANGE = "Invalid date range ({0} - {1}).";
-                public const string DATES_MONTH_COUNT_MAX = "Date range cannot exceed {0} months.";
                 public const string EMAIL_INVALID = "{0} is not a valid email address.";
-                public const string MUST_BE_EMPTY = "{0} must be empty.";
-                public const string LIST_NOT_EMPTY = "{0} must contain at least one valid element.";
                 public const string IP_INVALID = "{0} is not a valid IP address";
-                public const string NUMBER_INVALID = "{0} must be a number.";
                 public const string INTEGER_INVALID = "{0} must be an integer number.";
                 public const string SHORT_INVALID = "{0} must be a short integer number.";
                 public const string LONG_INVALID = "{0} must be a long integer number.";
+                public const string NUMBER_INVALID = "{0} must be a number.";
                 public const string NUMBER_VALUE_MIN = "{0} must be a number greater than {1}.";
                 public const string NUMBER_VALUE_MAX = "{0} must be a number lower than {1}.";
                 public const string NUMBER_RANGE = "{0} must be a number between {1} and {2}.";
+                public const string DATES_INVALID_RANGE = "Invalid date range ({0} - {1}).";
+                public const string DATES_MONTH_COUNT_MAX = "Date range cannot exceed {0} months.";
                 public const string DATE_TIME_INVALID = "{0} must be a valid date/time.";
-                public const string DATE_TIME_MIN = "{0} must be a {1} greater then {2}.";
-                public const string DATE_TIME_MAX = "{0} must be a {1} lower then {2}.";
-                public const string DATE_TIME_RANGE = "{0} must be a {1} between {2} and {3}.";
+                public const string DATE_TIME_MIN = "{0} must be a date/time greater than {2}.";
+                public const string DATE_TIME_MAX = "{0} must be a date/time lower than {2}.";
+                public const string DATE_TIME_RANGE = "{0} must be a date/time between {2} and {3}.";
+                public const string DATE_INVALID = "{0} must be a valid date.";
+                public const string DATE_MIN = "{0} must be a date greater than {2}.";
+                public const string DATE_MAX = "{0} must be a date lower than {2}.";
+                public const string DATE_RANGE = "{0} must be a date between {2} and {3}.";
                 public const string TIME_INVALID = "{0} must be a valid time.";
                 public const string TIME_RANGE_INVALID = "{0} is not a valid time range ({1} - {2}).";
                 public const string TIME_RANGE_MIN = "{0} must be a time range of {1} at least.";
@@ -52,11 +56,32 @@ namespace namasdev.Core.Validation
                 public const string TIME_RANGE_RANGE = "{0} must be a time range between {1} and {2}.";
                 public const string TIME_RANGE_EXACT = "{0} must be a time range of {1}.";
                 public const string BOOLEAN_INVALID = "{0} must be a boolean.";
+                public const string FILE_EXTENSION_INVALID = "{0} has an invalid file extension. Valid extensions: {1}.";
+            }
+
+            public static string Invalid(string name)
+            {
+                return string.Format(Formats.INVALID, name);
+            }
+
+            public static string TypeInvalid(string name, string typeName)
+            {
+                return string.Format(Formats.TYPE_INVALID, name, typeName);
             }
 
             public static string MustBeEmpty(string name)
             {
                 return String.Format(Formats.MUST_BE_EMPTY, name);
+            }
+
+            public static string ListNotEmpty(string name)
+            {
+                return String.Format(Formats.LIST_NOT_EMPTY, name);
+            }
+
+            public static string Required(string name)
+            {
+                return String.Format(Formats.REQUIRED, name);
             }
 
             public static string EntityNotFound(string entity, object valueBusqueda)
@@ -70,64 +95,173 @@ namespace namasdev.Core.Validation
                 return String.Format(Formats.ENTITY_DELETED, entity, Convert.ToString(valueBusqueda));
             }
 
-            public static string Required(string name)
-            {
-                return String.Format(Formats.REQUIRED, name);
-            }
-
-            public static string TextExactLength(string name, int tamaño)
-            {
-                return String.Format(Formats.TEXT_EXACT_LENGTH, name, tamaño);
-            }
-
-            public static string TextMinLength(string name, int minLength)
+            public static string TextLengthMin(string name, int minLength)
             {
                 return String.Format(Formats.TEXT_LENGTH_MIN, name, minLength);
             }
 
-            public static string TextMaxLength(string name, int maxLength)
+            public static string TextLengthMax(string name, int maxLength)
             {
                 return String.Format(Formats.TEXT_LENGTH_MAX, name, maxLength);
             }
 
-            public static string TextRangeLength(string name, int minLength, int maxLength)
+            public static string TextLengthRange(string name, int minLength, int maxLength)
             {
                 return String.Format(Formats.TEXT_LENGTH_RANGE, name, minLength, maxLength);
             }
 
-            public static string DateTime(string name)
+            public static string TextLengthExact(string name, int tamaño)
             {
-                return String.Format(Formats.DATE_TIME_INVALID, name);
+                return String.Format(Formats.TEXT_EXACT_LENGTH, name, tamaño);
             }
 
-            public static string Time(string name)
+            public static string EmailInvalid(string name)
             {
-                return String.Format(Formats.TIME_INVALID, name);
+                return String.Format(Formats.EMAIL_INVALID, name);
             }
 
-            public static string Number(string name)
+            public static string IPInvalid(string name)
             {
-                return String.Format(Formats.NUMBER_INVALID, name);
+                return String.Format(Formats.IP_INVALID, name);
             }
 
-            public static string Integer(string name)
+            public static string IntegerInvalid(string name)
             {
                 return String.Format(Formats.INTEGER_INVALID, name);
             }
 
-            public static string ShortInteger(string name)
+            public static string ShortInvalid(string name)
             {
                 return String.Format(Formats.SHORT_INVALID, name);
             }
 
-            public static string LongInteger(string name)
+            public static string LongInvalid(string name)
             {
                 return String.Format(Formats.LONG_INVALID, name);
             }
 
-            public static string Boolean(string name)
+            public static string NumberInvalid(string name)
+            {
+                return String.Format(Formats.NUMBER_INVALID, name);
+            }
+
+            public static string NumberValueMin(string name, long min)
+            {
+                return String.Format(Formats.NUMBER_VALUE_MIN, name, Formatter.Number(min));
+            }
+
+            public static string NumberValueMin(string name, decimal min, int decimalDigits)
+            {
+                return String.Format(Formats.NUMBER_VALUE_MIN, name, Formatter.Number(min, decimalDigits: decimalDigits));
+            }
+
+            public static string NumberValueMax(string name, long max)
+            {
+                return String.Format(Formats.NUMBER_VALUE_MAX, name, Formatter.Number(max));
+            }
+
+            public static string NumberValueMax(string name, decimal max, int decimalDigits)
+            {
+                return String.Format(Formats.NUMBER_VALUE_MAX, name, Formatter.Number(max, decimalDigits: decimalDigits));
+            }
+
+            public static string NumberRange(string name, long min, long max)
+            {
+                return String.Format(Messages.Formats.NUMBER_RANGE, name, Formatter.Number(min), Formatter.Number(max));
+            }
+
+            public static string NumberRange(string name, decimal min, decimal max, int decimalDigits)
+            {
+                return String.Format(Messages.Formats.NUMBER_RANGE, name, Formatter.Number(min, decimalDigits: decimalDigits), Formatter.Number(max, decimalDigits: decimalDigits));
+            }
+
+            public static string DatesInvalidRange(DateTime from, DateTime to,
+                bool includeTime = false,
+                DateFormat dateFormat = DateFormat.MDY)
+            {
+                Func<DateTime, string> formatter;
+                if (includeTime)
+                {
+                    formatter = (f) => Formatter.DateTime(f, dateFormat);
+                }
+                else
+                {
+                    formatter = (f) => Formatter.Date(f, dateFormat);
+                }
+
+                return String.Format(Formats.DATES_INVALID_RANGE, formatter(from), formatter(to));
+            }
+
+            public static string DatesMonthCountMax(int monthCountMax)
+            {
+                return String.Format(Formats.DATES_MONTH_COUNT_MAX, monthCountMax);
+            }
+
+            public static string DateTimeInvalid(string name,
+                bool includeTime = false)
+            {
+                return String.Format(Formats.DATE_TIME_INVALID, name);
+            }
+
+            public static string DateTimeMin(string name, DateTime min,
+                bool includeTime = false,
+                DateFormat dateFormat = DateFormat.MDY)
+            {
+                return String.Format(includeTime ? Formats.DATE_TIME_MIN : Formats.DATE_MIN, name, Formatter.DateTime(min, dateFormat));
+            }
+
+            public static string DateTimeMax(string name, DateTime max,
+                bool includeTime = false,
+                DateFormat dateFormat = DateFormat.MDY)
+            {
+                return String.Format(includeTime ? Formats.DATE_TIME_MAX : Formats.DATE_MAX, name, Formatter.DateTime(max, dateFormat));
+            }
+
+            public static string DateTimeRange(string name, DateTime from, DateTime to,
+                bool includeTime = false,
+                DateFormat dateFormat = DateFormat.MDY)
+            {
+                return String.Format(includeTime ? Formats.DATE_TIME_RANGE : Formats.DATE_RANGE, name, Formatter.DateTime(from, dateFormat), Formatter.DateTime(to, dateFormat));
+            }
+
+            public static string TimeInvalid(string name)
+            {
+                return String.Format(Formats.TIME_INVALID, name);
+            }
+
+            public static string TimeRangeInvalid(string name, TimeSpan from, TimeSpan to)
+            {
+                return String.Format(Formats.TIME_RANGE_INVALID, name, Formatter.Time(from), Formatter.Time(to));
+            }
+
+            public static string TimeRangeMin(string name, TimeSpan min)
+            {
+                return String.Format(Messages.Formats.TIME_RANGE_MIN, name, Formatter.Time(min));
+            }
+
+            public static string TimeRangeMax(string name, TimeSpan max)
+            {
+                return String.Format(Messages.Formats.TIME_RANGE_MAX, name, Formatter.Time(max));
+            }
+
+            public static string TimeRangeRange(string name, TimeSpan min, TimeSpan max)
+            {
+                return String.Format(Messages.Formats.TIME_RANGE_RANGE, name, Formatter.Time(min), Formatter.Time(max));
+            }
+
+            public static string TimeRangeExact(string name, TimeSpan value)
+            {
+                return String.Format(Messages.Formats.TIME_RANGE_EXACT, name, Formatter.Time(value));
+            }
+
+            public static string BooleanInvalid(string name)
             {
                 return String.Format(Formats.BOOLEAN_INVALID, name);
+            }
+
+            public static string FileExtensionInvalid(string name, string validExtensions)
+            {
+                return String.Format(Formats.FILE_EXTENSION_INVALID, name, validExtensions);
             }
         }
 
@@ -200,29 +334,25 @@ namespace namasdev.Core.Validation
         {
             if (entity == null)
             {
-                throw new Exception(String.Format(Messages.Formats.ENTITY_NOT_FOUND, description, id));
+                throw new Exception(Messages.EntityNotFound(description, id));
             }
         }
 
         public static bool ValidateFile(IO.File file, bool required,
             out string message,
             string description = null,
-            string extensions = null)
+            string extensionList = null)
         {
-            IEnumerable<string> extensionList =
-                !string.IsNullOrWhiteSpace(extensions)
-                ? ObtenerExtensionList(extensions)
-                : null;
-
             return ValidateFile(file, required,
                 out message,
-                description, extensionList);
+                description: description, 
+                extensionList: GetFileExtensionList(extensionList));
         }
 
         public static bool ValidateFileAndAddToErrorList(IO.File file, bool required, 
             List<string> errors,
             string description = null,
-            string extensions = null)
+            string extensionList = null)
         {
             return ValidateAndAddToErrorList(
                 () =>
@@ -230,7 +360,7 @@ namespace namasdev.Core.Validation
                     ValidateFile(file, required,
                         out string errorMessage,
                         description: description,
-                        extensions: extensions);
+                        extensionList: extensionList);
 
                     return errorMessage;
                 },
@@ -240,17 +370,15 @@ namespace namasdev.Core.Validation
         public static bool ValidateFile(IO.File file, bool required,
             out string message,
             string description = null,
-            IEnumerable<string> extensions = null)
+            IEnumerable<string> extensionList = null)
         {
             message = null;
-
-            description = $"File{(!String.IsNullOrWhiteSpace(description) ? $" {description}" : "")}";
 
             if (file == null || file.Content == null || file.Content.Length == 0)
             {
                 if (required)
                 {
-                    message = Messages.Required(description);
+                    message = Messages.Required(GetFileDescription(file, description));
                     return false;
                 }
                 else
@@ -259,10 +387,11 @@ namespace namasdev.Core.Validation
                 }
             }
 
-            if (extensions != null)
+            if (extensionList != null)
             {
-                return ValidateFileExtension(file.Name, extensions,
-                    out message);
+                return ValidateFileExtension(file.Name, extensionList,
+                    out message,
+                    description: description);
             }
 
             return true;
@@ -271,7 +400,7 @@ namespace namasdev.Core.Validation
         public static bool ValidateFileAndAddToErrorList(IO.File file, bool required, 
             List<string> errors,
             string description = null,
-            IEnumerable<string> extensions = null)
+            IEnumerable<string> extensionList = null)
         {
             return ValidateAndAddToErrorList(
                 () =>
@@ -279,39 +408,45 @@ namespace namasdev.Core.Validation
                     ValidateFile(file, required,
                         out string errorMessage,
                         description: description,
-                        extensions: extensions);
+                        extensionList: extensionList);
 
                     return errorMessage;
                 },
                 errors);
         }
 
-        public static bool ValidateFileExtension(string fileName, string extensions,
-            out string message)
+        public static bool ValidateFileExtension(string fileName, string extensionList,
+            out string message,
+            string description = null)
         {
-            return ValidateFileExtension(fileName, ObtenerExtensionList(extensions), out message);
+            return ValidateFileExtension(fileName, GetFileExtensionList(extensionList),
+                out message,
+                description: description);
         }
 
-        public static bool ValidateFileExtensionAndAddToErrorList(string fileName, string extensions, 
-            List<string> errors)
+        public static bool ValidateFileExtensionAndAddToErrorList(string fileName, string extensionList,
+            List<string> errors,
+            string description = null)
         {
             return ValidateAndAddToErrorList(
                 () =>
                 {
-                    ValidateFileExtension(fileName, extensions,
-                        out string errorMessage);
+                    ValidateFileExtension(fileName, GetFileExtensionList(extensionList),
+                        out string errorMessage,
+                        description: description);
 
                     return errorMessage;
                 },
                 errors);
         }
 
-        public static bool ValidateFileExtension(string fileName, IEnumerable<string> extensions,
-            out string message)
+        public static bool ValidateFileExtension(string fileName, IEnumerable<string> extensionList,
+            out string message,
+            string description = null)
         {
-            if (!IsValidFileExtension(fileName, extensions))
+            if (!IsValidFileExtension(fileName, extensionList))
             {
-                message = String.Format("Invalid '{0}' file. Valid extensions: {1}.", Path.GetFileName(fileName), String.Join(", ", extensions));
+                message = Messages.FileExtensionInvalid(GetFileDescription(fileName, description), Formatter.List(extensionList, ", "));
                 return false;
             }
 
@@ -319,37 +454,60 @@ namespace namasdev.Core.Validation
             return true;
         }
 
-        public static bool ValidateFileExtensionAndAddToErrorList(string fileName, IEnumerable<string> extensions, 
-            List<string> errors)
+        public static bool ValidateFileExtensionAndAddToErrorList(string fileName, IEnumerable<string> extensionList, 
+            List<string> errors,
+            string description = null)
         {
             return ValidateAndAddToErrorList(
                 () =>
                 {
-                    ValidateFileExtension(fileName, extensions,
-                        out string errorMessage);
+                    ValidateFileExtension(fileName, extensionList,
+                        out string errorMessage,
+                        description: description);
 
                     return errorMessage;
                 },
                 errors);
         }
 
-        public static bool IsValidFileExtension(string fileName, string extensions)
+        public static bool IsValidFileExtension(string fileName, string extensionList)
         {
-            return IsValidFileExtension(fileName, ObtenerExtensionList(extensions));
+            return IsValidFileExtension(fileName, GetFileExtensionList(extensionList));
         }
 
-        public static bool IsValidFileExtension(string fileName, IEnumerable<string> extensions)
+        public static bool IsValidFileExtension(string fileName, IEnumerable<string> extensionList)
         {
-            ValidateRequiredArgumentAndThrow(extensions, nameof(extensions));
+            ValidateRequiredArgumentAndThrow(extensionList, nameof(extensionList));
 
-            return extensions.Contains(Path.GetExtension(fileName).ToLower());
+            return extensionList.Contains(Path.GetExtension(fileName).ToLower());
         }
 
-        private static string[] ObtenerExtensionList(string extensions)
+        private static string GetFileDescription(IO.File file, string description)
         {
-            ValidateRequiredArgumentAndThrow(extensions, nameof(extensions));
+            return GetFileDescription(file?.Name, description);
 
-            return extensions.Split(',');
+        }
+        
+        private static string GetFileDescription(string fileName, string description)
+        {
+            if (!string.IsNullOrWhiteSpace(description))
+            {
+                return description;
+            }
+            else if (!string.IsNullOrWhiteSpace(fileName))
+            {
+                return Path.GetFileName(fileName);
+            }
+
+            return "File";
+        }
+
+        private static string[] GetFileExtensionList(string extensionList)
+        {
+            return 
+                string.IsNullOrWhiteSpace(extensionList)
+                ? null
+                : extensionList.Split(',');
         }
 
         public static bool ValidateString(
@@ -372,7 +530,7 @@ namespace namasdev.Core.Validation
                 {
                     if (value.Length != exactLength.Value)
                     {
-                        errorMessage = Messages.TextExactLength(name, exactLength.Value);
+                        errorMessage = Messages.TextLengthExact(name, exactLength.Value);
                         return false;
                     }
                 }
@@ -381,7 +539,7 @@ namespace namasdev.Core.Validation
                     if (value.Length < minLength.Value
                         || value.Length > maxLength.Value)
                     {
-                        errorMessage = Messages.TextRangeLength(name, minLength.Value, maxLength.Value);
+                        errorMessage = Messages.TextLengthRange(name, minLength.Value, maxLength.Value);
                         return false;
                     }
                 }
@@ -389,7 +547,7 @@ namespace namasdev.Core.Validation
                 {
                     if (value.Length < minLength.Value)
                     {
-                        errorMessage = Messages.TextMinLength(name, minLength.Value);
+                        errorMessage = Messages.TextLengthMin(name, minLength.Value);
                         return false;
                     }
                 }
@@ -397,7 +555,7 @@ namespace namasdev.Core.Validation
                 {
                     if (value.Length > maxLength.Value)
                     {
-                        errorMessage = Messages.TextMaxLength(name, maxLength.Value);
+                        errorMessage = Messages.TextLengthMax(name, maxLength.Value);
                         return false;
                     }
                 }
@@ -406,7 +564,7 @@ namespace namasdev.Core.Validation
                 {
                     if (!Regex.IsMatch(value, regEx))
                     {
-                        errorMessage = String.Format(Messages.Formats.INVALID, name);
+                        errorMessage = Messages.Invalid(name);
                         return false;
                     }
                 }
@@ -445,17 +603,9 @@ namespace namasdev.Core.Validation
         {
             if (dateFrom > dateTo)
             {
-                Func<DateTime, string> formatter;
-                if (includeTime)
-                {
-                    formatter = (f) => Formatter.DateTime(f, dateFormat);
-                }
-                else
-                {
-                    formatter = (f) => Formatter.Date(f, dateFormat);
-                }
-
-                errorMessage = String.Format(Messages.Formats.DATES_INVALID_RANGE, formatter(dateFrom), formatter(dateTo));
+                errorMessage = Messages.DatesInvalidRange(dateFrom, dateTo, 
+                    includeTime: includeTime, 
+                    dateFormat: dateFormat);
                 return false;
             }
             else
@@ -467,7 +617,7 @@ namespace namasdev.Core.Validation
 
                     if (monthCount > monthCountMax)
                     {
-                        errorMessage = String.Format(Messages.Formats.DATES_MONTH_COUNT_MAX, monthCountMax);
+                        errorMessage = Messages.DatesMonthCountMax(monthCountMax.Value);
                         return false;
                     }
                 }
@@ -518,7 +668,7 @@ namespace namasdev.Core.Validation
             }
             catch (Exception)
             {
-                errorMessage = String.Format(Messages.Formats.EMAIL_INVALID, name);
+                errorMessage = Messages.EmailInvalid(name);
                 return false;
             }
         }
@@ -544,7 +694,7 @@ namespace namasdev.Core.Validation
             if (!IPAddress.TryParse(ipAddress, out oIPAddress)
                 || !String.Equals(ipAddress, oIPAddress.ToString(), StringComparison.CurrentCultureIgnoreCase))
             {
-                errorMessage = String.Format(Messages.Formats.IP_INVALID, name);
+                errorMessage = Messages.IPInvalid(name);
                 return false;
             }
 
@@ -593,7 +743,7 @@ namespace namasdev.Core.Validation
             {
                 if (required)
                 {
-                    errorMessage = String.Format(Messages.Formats.REQUIRED, name);
+                    errorMessage = Messages.Required(name);
                     return false;
                 }
             }
@@ -604,7 +754,7 @@ namespace namasdev.Core.Validation
                     if (value < minValue
                         || value > maxValue)
                     {
-                        errorMessage = String.Format(Messages.Formats.NUMBER_RANGE, name, Formatter.Number(minValue, decimalDigits: decimalDigits), Formatter.Number(maxValue, decimalDigits: decimalDigits));
+                        errorMessage = Messages.NumberRange(name, minValue.Value, maxValue.Value, decimalDigits);
                         return false;
                     }
                 }
@@ -613,14 +763,14 @@ namespace namasdev.Core.Validation
                     if (minValue.HasValue
                         && value < minValue)
                     {
-                        errorMessage = String.Format(Messages.Formats.NUMBER_VALUE_MIN, name, Formatter.Number(minValue, decimalDigits: decimalDigits));
+                        errorMessage = Messages.NumberValueMin(name, minValue.Value, decimalDigits: decimalDigits);
                         return false;
                     }
 
                     if (maxValue.HasValue
                         && value > maxValue)
                     {
-                        errorMessage = String.Format(Messages.Formats.NUMBER_VALUE_MAX, name, Formatter.Number(maxValue, decimalDigits: decimalDigits));
+                        errorMessage = Messages.NumberValueMax(name, maxValue.Value, decimalDigits: decimalDigits);
                         return false;
                     }
                 }
@@ -628,60 +778,6 @@ namespace namasdev.Core.Validation
 
             errorMessage = null;
             return true;
-        }
-
-        public static bool ValidateNumberAndAddToErrorList(int? value, string name, bool required,
-            List<string> errors,
-            int? minValue = null, int? maxValue = null)
-        {
-            return ValidateNumberAndAddToErrorList((decimal?)value, name, required,
-                errors,
-                minValue: minValue, maxValue: maxValue);
-        }
-
-        public static bool ValidateNumber(int? value, string name, bool required,
-            out string errorMessage,
-            int? minValue = null, int? maxValue = null)
-        {
-            return ValidateNumber((decimal?)value, name, required,
-                out errorMessage,
-                minValue: minValue, maxValue: maxValue);
-        }
-
-        public static bool ValidateNumberAndAddToErrorList(short? value, string name, bool required,
-            List<string> errors,
-            short? minValue = null, short? maxValue = null)
-        {
-            return ValidateNumberAndAddToErrorList((decimal?)value, name, required,
-                errors,
-                minValue: minValue, maxValue: maxValue);
-        }
-
-        public static bool ValidateNumber(short? value, string name, bool required,
-            out string errorMessage,
-            short? minValue = null, short? maxValue = null)
-        {
-            return ValidateNumber((decimal?)value, name, required,
-                out errorMessage,
-                minValue: minValue, maxValue: maxValue);
-        }
-
-        public static bool ValidateNumberAndAddToErrorList(long? value, string name, bool required,
-            List<string> errors,
-            long? minValue = null, long? maxValue = null)
-        {
-            return ValidateNumberAndAddToErrorList((decimal?)value, name, required,
-                errors,
-                minValue: minValue, maxValue: maxValue);
-        }
-
-        public static bool ValidateNumber(long? value, string name, bool required,
-            out string errorMessage,
-            long? minValue = null, long? maxValue = null)
-        {
-            return ValidateNumber((decimal?)value, name, required,
-                out errorMessage,
-                minValue: minValue, maxValue: maxValue);
         }
 
         public static bool ValidateNumberAndAddToErrorList(double? value, string name, bool required,
@@ -706,6 +802,97 @@ namespace namasdev.Core.Validation
                 decimalDigits: decimalDigits);
         }
 
+        public static bool ValidateNumberAndAddToErrorList(int? value, string name, bool required,
+            List<string> errors,
+            int? minValue = null, int? maxValue = null)
+        {
+            return ValidateNumberAndAddToErrorList((long?)value, name, required,
+                errors,
+                minValue: minValue, maxValue: maxValue);
+        }
+
+        public static bool ValidateNumber(int? value, string name, bool required,
+            out string errorMessage,
+            int? minValue = null, int? maxValue = null)
+        {
+            return ValidateNumber((long?)value, name, required,
+                out errorMessage,
+                minValue: minValue, maxValue: maxValue);
+        }
+
+        public static bool ValidateNumberAndAddToErrorList(short? value, string name, bool required,
+            List<string> errors,
+            short? minValue = null, short? maxValue = null)
+        {
+            return ValidateNumberAndAddToErrorList((long?)value, name, required,
+                errors,
+                minValue: minValue, maxValue: maxValue);
+        }
+
+        public static bool ValidateNumber(short? value, string name, bool required,
+            out string errorMessage,
+            short? minValue = null, short? maxValue = null)
+        {
+            return ValidateNumber((long?)value, name, required,
+                out errorMessage,
+                minValue: minValue, maxValue: maxValue);
+        }
+
+        public static bool ValidateNumberAndAddToErrorList(long? value, string name, bool required,
+            List<string> errors,
+            long? minValue = null, long? maxValue = null)
+        {
+            return ValidateNumberAndAddToErrorList(value, name, required,
+                errors,
+                minValue: minValue, maxValue: maxValue);
+        }
+
+        public static bool ValidateNumber(long? value, string name, bool required,
+            out string errorMessage,
+            long? minValue = null, long? maxValue = null,
+            int decimalDigits = 2)
+        {
+            if (!value.HasValue)
+            {
+                if (required)
+                {
+                    errorMessage = Messages.Required(name);
+                    return false;
+                }
+            }
+            else
+            {
+                if (minValue.HasValue && maxValue.HasValue)
+                {
+                    if (value < minValue
+                        || value > maxValue)
+                    {
+                        errorMessage = Messages.NumberRange(name, minValue.Value, maxValue.Value);
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (minValue.HasValue
+                        && value < minValue)
+                    {
+                        errorMessage = Messages.NumberValueMin(name, minValue.Value);
+                        return false;
+                    }
+
+                    if (maxValue.HasValue
+                        && value > maxValue)
+                    {
+                        errorMessage = Messages.NumberValueMax(name, maxValue.Value, decimalDigits: decimalDigits);
+                        return false;
+                    }
+                }
+            }
+
+            errorMessage = null;
+            return true;
+        }
+
         public static bool ValidateDate(
             DateTime? date, string name, bool required,
             out string errorMessage,
@@ -717,26 +904,17 @@ namespace namasdev.Core.Validation
             {
                 if (required)
                 {
-                    errorMessage = String.Format(Messages.Formats.REQUIRED, name);
+                    errorMessage = Messages.Required(name);
                     return false;
                 }
             }
             else
             {
-                string dateText = $"Date{(includeTime ? "/Time" : string.Empty)}";
-
-                Func<DateTime?, string> format;
-                if (includeTime)
-                {
-                    format = (f) => Formatter.DateTime(f, dateFormat);
-                }
-                else
+                if (!includeTime)
                 {
                     date = date.Value.Date;
                     minValue = minValue?.Date;
                     maxValue = maxValue?.Date;
-
-                    format = (f) => Formatter.Date(f, dateFormat);
                 }
 
                 if (minValue.HasValue && maxValue.HasValue)
@@ -744,7 +922,9 @@ namespace namasdev.Core.Validation
                     if (date < minValue
                         || date > maxValue)
                     {
-                        errorMessage = String.Format(Messages.Formats.DATE_TIME_RANGE, name, dateText, format(minValue), format(maxValue));
+                        errorMessage = Messages.DateTimeRange(name, minValue.Value, maxValue.Value, 
+                            includeTime: includeTime,
+                            dateFormat: dateFormat);
                         return false;
                     }
                 }
@@ -752,7 +932,9 @@ namespace namasdev.Core.Validation
                 {
                     if (date < minValue)
                     {
-                        errorMessage = String.Format(Messages.Formats.DATE_TIME_MIN, name, dateText, format(minValue));
+                        errorMessage = Messages.DateTimeMin(name, minValue.Value,
+                            includeTime: includeTime,
+                            dateFormat: dateFormat);
                         return false;
                     }
                 }
@@ -760,7 +942,9 @@ namespace namasdev.Core.Validation
                 {
                     if (date > maxValue)
                     {
-                        errorMessage = String.Format(Messages.Formats.DATE_TIME_MAX, name, dateText, format(maxValue));
+                        errorMessage = Messages.DateTimeMax(name, maxValue.Value,
+                            includeTime: includeTime,
+                            dateFormat: dateFormat);
                         return false;
                     }
                 }
@@ -792,26 +976,35 @@ namespace namasdev.Core.Validation
         public static bool ValidateTimeRange(
             TimeSpan from, TimeSpan to, string name,
             out string errorMessage,
-            TimeSpan? minValue = null, TimeSpan? maxValue = null)
+            TimeSpan? minValue = null, TimeSpan? maxValue = null,
+            TimeSpan? exactValue = null)
         {
             if (from > to)
             {
-                errorMessage = String.Format(Messages.Formats.TIME_RANGE_INVALID, name, Formatter.Time(from), Formatter.Time(to));
+                errorMessage = Messages.TimeRangeInvalid(name, from, to);
                 return false;
             }
 
+            if (minValue.HasValue && minValue == maxValue)
+            {
+                exactValue = minValue.Value;
+            }
+
             var diffTime = to - from;
-            if (minValue.HasValue && maxValue.HasValue)
+            if (exactValue.HasValue)
+            {
+                if (diffTime != exactValue.Value)
+                {
+                    errorMessage = Messages.TimeRangeExact(name, exactValue.Value);
+                    return false;
+                }
+            }
+            else if (minValue.HasValue && maxValue.HasValue)
             {
                 if (diffTime < minValue
                     || diffTime > maxValue)
                 {
-                    string format =
-                        minValue == maxValue
-                        ? Messages.Formats.TIME_RANGE_EXACT
-                        : Messages.Formats.TIME_RANGE_RANGE;
-
-                    errorMessage = String.Format(format, name, Formatter.Time(minValue.Value), Formatter.Time(maxValue.Value));
+                    errorMessage = Messages.TimeRangeRange(name, minValue.Value, maxValue.Value);
                     return false;
                 }
             }
@@ -819,7 +1012,7 @@ namespace namasdev.Core.Validation
             {
                 if (diffTime < minValue.Value)
                 {
-                    errorMessage = String.Format(Messages.Formats.TIME_RANGE_MIN, name, Formatter.Time(minValue.Value));
+                    errorMessage = Messages.TimeRangeMin(name, minValue.Value);
                     return false;
                 }
             }
@@ -827,7 +1020,7 @@ namespace namasdev.Core.Validation
             {
                 if (diffTime > maxValue.Value)
                 {
-                    errorMessage = String.Format(Messages.Formats.TIME_RANGE_MAX, name, Formatter.Time(maxValue.Value));
+                    errorMessage = Messages.TimeRangeMax(name, maxValue.Value);
                     return false;
                 }
             }

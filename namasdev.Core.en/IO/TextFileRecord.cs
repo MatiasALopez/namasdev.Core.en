@@ -73,7 +73,7 @@ namespace namasdev.Core.IO
                 }
                 catch (Exception)
                 {
-                    AddError(position, Validation.Validator.Messages.Integer(dataDescription));
+                    AddError(position, Validation.Validator.Messages.IntegerInvalid(dataDescription));
                 }
             }
 
@@ -94,7 +94,7 @@ namespace namasdev.Core.IO
                 }
                 catch (Exception)
                 {
-                    AddError(position, Validation.Validator.Messages.ShortInteger(dataDescription));
+                    AddError(position, Validation.Validator.Messages.ShortInvalid(dataDescription));
                 }
             }
 
@@ -115,7 +115,7 @@ namespace namasdev.Core.IO
                 }
                 catch (Exception)
                 {
-                    AddError(position, Validation.Validator.Messages.LongInteger(dataDescription));
+                    AddError(position, Validation.Validator.Messages.LongInvalid(dataDescription));
                 }
             }
 
@@ -136,7 +136,7 @@ namespace namasdev.Core.IO
                 }
                 catch (Exception)
                 {
-                    AddError(position, Validation.Validator.Messages.Number(dataDescription));
+                    AddError(position, Validation.Validator.Messages.NumberInvalid(dataDescription));
                 }
             }
 
@@ -157,7 +157,7 @@ namespace namasdev.Core.IO
                 }
                 catch (Exception)
                 {
-                    AddError(position, Validation.Validator.Messages.Number(dataDescription));
+                    AddError(position, Validation.Validator.Messages.NumberInvalid(dataDescription));
                 }
             }
 
@@ -181,7 +181,7 @@ namespace namasdev.Core.IO
                 }
                 catch (Exception)
                 {
-                    AddError(position, Validation.Validator.Messages.DateTime(dataDescription));
+                    AddError(position, Validation.Validator.Messages.DateTimeInvalid(dataDescription));
                 }
             }
 
@@ -204,7 +204,7 @@ namespace namasdev.Core.IO
                 }
                 catch (Exception)
                 {
-                    AddError(position, Validation.Validator.Messages.Time(dataDescription));
+                    AddError(position, Validation.Validator.Messages.TimeInvalid(dataDescription));
                 }
             }
 
@@ -231,7 +231,7 @@ namespace namasdev.Core.IO
                     }
                     catch (Exception)
                     {
-                        AddError(position, Validation.Validator.Messages.Boolean(dataDescription));
+                        AddError(position, Validation.Validator.Messages.BooleanInvalid(dataDescription));
                     }
                 }
             }
