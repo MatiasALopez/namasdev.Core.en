@@ -31,20 +31,22 @@ namespace namasdev.Core.Linq
         public static IQueryable<T> OrderAndPage<T>(this IQueryable<T> query, OrderAndPagingParameters op,
             string defaultOrder = null)
         {
-            defaultOrder = (defaultOrder ?? op?.DefaultOrder)
-                .ValueNotEmptyOrNull(nullReplacementValue: "1");
+            defaultOrder = (defaultOrder ?? op?.DefaultOrder).ValueNotEmptyOrNull();
 
             if (op == null)
             {
-                return !String.IsNullOrWhiteSpace(defaultOrder)
-                    ? query.OrderBy(defaultOrder)
-                    : query;
+                return query.Order(defaultOrder);
             }
 
             string order =
                 !String.IsNullOrWhiteSpace(op.Order)
                 ? op.Order
                 : defaultOrder;
+
+            if (String.IsNullOrWhiteSpace(order))
+            {
+                throw new ArgumentException("An ordering must be provided when paging.",nameof(op));
+            }
 
             op.ItemsTotalCount = query.Count();
 
