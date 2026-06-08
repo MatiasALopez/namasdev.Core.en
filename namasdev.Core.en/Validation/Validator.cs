@@ -24,8 +24,9 @@ namespace namasdev.Core.Validation
                 public const string MUST_BE_EMPTY = "{0} must be empty.";
                 public const string LIST_NOT_EMPTY = "{0} must contain at least one valid element.";
                 public const string REQUIRED = "{0} is required.";
-                public const string ENTITY_NOT_FOUND = "{0} not found ({1}).";
-                public const string ENTITY_DELETED = "{0} was already deleted ({2}).";
+                public const string ENTITY_NOT_FOUND = "{0} not found.";
+                public const string ENTITY_NOT_FOUND_WITH_ID = "{0} not found ({1}).";
+                public const string ENTITY_DELETED = "{0} was already deleted ({1}).";
                 public const string TEXT_LENGTH_MIN = "{0} must be {1} characters long al least.";
                 public const string TEXT_LENGTH_MAX = "{0} must be {1} characters long at most.";
                 public const string TEXT_LENGTH_RANGE = "{0} must be between {1} and {2} characters long.";
@@ -42,13 +43,13 @@ namespace namasdev.Core.Validation
                 public const string DATES_INVALID_RANGE = "Invalid date range ({0} - {1}).";
                 public const string DATES_MONTH_COUNT_MAX = "Date range cannot exceed {0} months.";
                 public const string DATE_TIME_INVALID = "{0} must be a valid date/time.";
-                public const string DATE_TIME_MIN = "{0} must be a date/time greater than {2}.";
-                public const string DATE_TIME_MAX = "{0} must be a date/time lower than {2}.";
-                public const string DATE_TIME_RANGE = "{0} must be a date/time between {2} and {3}.";
+                public const string DATE_TIME_MIN = "{0} must be a date/time greater than {1}.";
+                public const string DATE_TIME_MAX = "{0} must be a date/time lower than {1}.";
+                public const string DATE_TIME_RANGE = "{0} must be a date/time between {1} and {2}.";
                 public const string DATE_INVALID = "{0} must be a valid date.";
-                public const string DATE_MIN = "{0} must be a date greater than {2}.";
-                public const string DATE_MAX = "{0} must be a date lower than {2}.";
-                public const string DATE_RANGE = "{0} must be a date between {2} and {3}.";
+                public const string DATE_MIN = "{0} must be a date greater than {1}.";
+                public const string DATE_MAX = "{0} must be a date lower than {1}.";
+                public const string DATE_RANGE = "{0} must be a date between {1} and {2}.";
                 public const string TIME_INVALID = "{0} must be a valid time.";
                 public const string TIME_RANGE_INVALID = "{0} is not a valid time range ({1} - {2}).";
                 public const string TIME_RANGE_MIN = "{0} must be a time range of {1} at least.";
@@ -84,9 +85,17 @@ namespace namasdev.Core.Validation
                 return String.Format(Formats.REQUIRED, name);
             }
 
-            public static string EntityNotFound(string entity, object valueBusqueda)
+            public static string EntityNotFound(string entity)
             {
-                return String.Format(Formats.ENTITY_NOT_FOUND, entity, Convert.ToString(valueBusqueda));
+                return String.Format(Formats.ENTITY_NOT_FOUND, entity);
+            }
+
+            public static string EntityNotFound(string entity, object searchValue)
+            {
+                string searchValueString = Convert.ToString(searchValue);
+                return string.IsNullOrWhiteSpace(searchValueString)
+                    ? String.Format(Formats.ENTITY_NOT_FOUND, entity)
+                    : String.Format(Formats.ENTITY_NOT_FOUND_WITH_ID, entity, searchValueString);
             }
 
             public static string EntityDeleted(string entity, object valueBusqueda,
@@ -842,15 +851,21 @@ namespace namasdev.Core.Validation
             List<string> errors,
             long? minValue = null, long? maxValue = null)
         {
-            return ValidateNumberAndAddToErrorList(value, name, required,
-                errors,
-                minValue: minValue, maxValue: maxValue);
+            return ValidateAndAddToErrorList(
+                () =>
+                {
+                    ValidateNumber(value, name, required,
+                        out string errorMessage,
+                        minValue: minValue, maxValue: maxValue);
+
+                    return errorMessage;
+                },
+                errors);
         }
 
         public static bool ValidateNumber(long? value, string name, bool required,
             out string errorMessage,
-            long? minValue = null, long? maxValue = null,
-            int decimalDigits = 2)
+            long? minValue = null, long? maxValue = null)
         {
             if (!value.HasValue)
             {
@@ -883,7 +898,7 @@ namespace namasdev.Core.Validation
                     if (maxValue.HasValue
                         && value > maxValue)
                     {
-                        errorMessage = Messages.NumberValueMax(name, maxValue.Value, decimalDigits: decimalDigits);
+                        errorMessage = Messages.NumberValueMax(name, maxValue.Value);
                         return false;
                     }
                 }
