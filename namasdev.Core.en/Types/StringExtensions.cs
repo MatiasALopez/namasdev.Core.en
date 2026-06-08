@@ -41,9 +41,13 @@ namespace namasdev.Core.Types
             return Regex.Replace(value, REGEX_NON_ALPHANUMERIC_CHARACTERS_PATTERN, String.Empty);
         }
 
-        public static string Truncate(this string value, ushort length,
+        public static string Truncate(this string value, int length,
             string sufix = null)
         {
+            if (length < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(length), "Length must be non-negative.");
+            }
             if (String.IsNullOrWhiteSpace(value))
             {
                 return String.Empty;
