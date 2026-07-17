@@ -274,7 +274,7 @@ namespace namasdev.Core.Types
             string datePartsSeparator = "/", string hourPartsSeparator = ":", string dateTimeSeparator = " ",
             bool includeSeconds = false)
         {
-            return dateTime.ToString($"{GetDateFormatString(dateFormat, datePartsSeparator)}HH{hourPartsSeparator}mm{(includeSeconds ? $"{hourPartsSeparator}ss" : String.Empty)}");
+            return dateTime.ToString($"{GetDateFormatString(dateFormat, datePartsSeparator)}{dateTimeSeparator}HH{hourPartsSeparator}mm{(includeSeconds ? $"{hourPartsSeparator}ss" : String.Empty)}");
         }
 
         public static string Time(DateTime? dateTime,
