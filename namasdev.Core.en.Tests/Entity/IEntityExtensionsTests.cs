@@ -120,6 +120,7 @@ namespace namasdev.Core.en.Tests.Entity
 
             Assert.Equal("remover", entity.DeletedBy);
             Assert.Equal(now, entity.DeletedAt);
+            Assert.True(entity.Deleted);
         }
 
         [Fact]
@@ -145,7 +146,69 @@ namespace namasdev.Core.en.Tests.Entity
             {
                 Assert.Equal("admin", e.DeletedBy);
                 Assert.Equal(now, e.DeletedAt);
+                Assert.True(e.Deleted);
             }
+        }
+
+        // UnsetDeleted
+
+        [Fact]
+        public void UnsetDeleted_SingleEntity_ClearsAuditFields()
+        {
+            var entity = new TestEntity();
+            entity.SetDeleted("remover", new DateTime(2024, 6, 1, 12, 0, 0));
+
+            entity.UnsetDeleted();
+
+            Assert.Null(entity.DeletedBy);
+            Assert.Null(entity.DeletedAt);
+            Assert.False(entity.Deleted);
+        }
+
+        [Fact]
+        public void UnsetDeleted_EntityNotDeleted_LeavesFieldsCleared()
+        {
+            var entity = new TestEntity();
+
+            entity.UnsetDeleted();
+
+            Assert.Null(entity.DeletedBy);
+            Assert.Null(entity.DeletedAt);
+            Assert.False(entity.Deleted);
+        }
+
+        [Fact]
+        public void UnsetDeleted_NullEntity_Throws()
+        {
+            IEntityDeleted entity = null!;
+            Assert.Throws<ArgumentNullException>(() => entity.UnsetDeleted());
+        }
+
+        [Fact]
+        public void UnsetDeleted_Collection_ClearsAllEntities()
+        {
+            var entities = new List<IEntityDeleted>
+            {
+                new TestEntity(),
+                new TestEntity()
+            };
+            entities.SetDeleted("admin", DateTime.UtcNow);
+
+            entities.UnsetDeleted();
+
+            foreach (var e in entities)
+            {
+                Assert.Null(e.DeletedBy);
+                Assert.Null(e.DeletedAt);
+                Assert.False(e.Deleted);
+            }
+        }
+
+        [Fact]
+        public void UnsetDeleted_NullCollection_Throws()
+        {
+            IList<IEntityDeleted> entities = null!;
+            Assert.Throws<ArgumentNullException>(() => entities.UnsetDeleted());
         }
     }
 }
