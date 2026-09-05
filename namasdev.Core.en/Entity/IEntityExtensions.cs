@@ -90,6 +90,34 @@ namespace namasdev.Core.Entity
 
             entity.DeletedBy = user;
             entity.DeletedAt = dateTime;
+            entity.Deleted = true;
+        }
+
+        /// <summary>
+        /// Clears deleted audit data.
+        /// This operation only sets the instance's values; changes must be persisted after.
+        /// </summary>
+        public static void UnsetDeleted(this IList<IEntityDeleted> entities)
+        {
+            Validator.ValidateRequiredArgumentAndThrow(entities, nameof(entities));
+
+            foreach (var entity in entities)
+            {
+                entity.UnsetDeleted();
+            }
+        }
+
+        /// <summary>
+        /// Clears deleted audit data.
+        /// This operation only sets the instance's values; changes must be persisted after.
+        /// </summary>
+        public static void UnsetDeleted(this IEntityDeleted entity)
+        {
+            Validator.ValidateRequiredArgumentAndThrow(entity, nameof(entity));
+
+            entity.DeletedBy = null;
+            entity.DeletedAt = null;
+            entity.Deleted = false;
         }
     }
 }
