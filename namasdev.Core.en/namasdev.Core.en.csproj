@@ -1,13 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net48;net9.0</TargetFrameworks>
     <AssemblyName>namasdev.Core.en</AssemblyName>
     <RootNamespace>namasdev.Core.en</RootNamespace>
     <Deterministic>true</Deterministic>
-    <AssemblyVersion>0.1.2</AssemblyVersion>
-    <FileVersion>0.1.2</FileVersion>
-    <Version>0.1.2</Version>
+    <AssemblyVersion>0.1.3</AssemblyVersion>
+    <FileVersion>0.1.3</FileVersion>
+    <Version>0.1.3</Version>
     <Authors>Matias Alberto Lopez</Authors>
     <Description>namasdev Core library (English)</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
