@@ -35,8 +35,8 @@ namespace namasdev.Core.IO
 		{
 			public const string EXCEL = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             public const string EXCEL_97_2003 = "application/vnd.ms-excel";
-            public const string POWERPOINT = ".pptx";
-            public const string POWERPOINT_97_2003 = ".ppt";
+            public const string POWERPOINT = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+            public const string POWERPOINT_97_2003 = "application/vnd.ms-powerpoint";
             public const string WORD = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
             public const string WORD_97_2003 = "application/msword";
             public const string PDF = "application/pdf";
